@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Madritz">
+<meta name="theme-color" content="#14110e">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-startup-image" href="splash-1290x2796.png" media="(device-width:430px) and (device-height:932px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash-1179x2556.png" media="(device-width:393px) and (device-height:852px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash-1170x2532.png" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash-1125x2436.png" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash-828x1792.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash-750x1334.png" media="(device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<title>MADRITZ</title>
+<style>
+:root{
+ --bg:#14110e; --card:#1e1a15; --card2:#2a241c; --hueco:#0d0b09;
+ --bd:#4a3f2f; --oro:#c8a54a; --tinta:#f2e8d5; --rojo:#b04a3a; --rojo2:#e08070;
+ --sep:rgba(242,232,213,.14);
+ --tenue:rgba(242,232,213,.55);
+ --r:14px; --barra:50px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{color-scheme:dark;-webkit-text-size-adjust:100%}
+body{
+ margin:0;background:var(--bg);color:var(--tinta);
+ font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+ min-height:100dvh;
+ overscroll-behavior-y:contain;
+ -webkit-user-select:none;user-select:none;
+ padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+}
+.wrap{max-width:640px;margin:0 auto;
+ padding:calc(env(safe-area-inset-top) + 4px) 16px
+         calc(var(--barra) + env(safe-area-inset-bottom) + 24px);}
+
+/* ---- cabecera ---- */
+.cab{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0 2px}
+.logo{width:44px;height:44px;flex:0 0 44px;display:block}
+h1{font-size:27px;margin:0;letter-spacing:4px;font-weight:800;line-height:1}
+.sub{text-align:center;font-size:12px;color:var(--tenue);margin:6px 0 16px;letter-spacing:1px}
+@media (max-width:360px){.logo{width:36px;height:36px;flex:0 0 36px}h1{font-size:22px}}
+
+/* ---- tarjetas ---- */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);
+ padding:16px;margin-bottom:14px}
+.rotulo{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--tenue);
+ text-transform:uppercase;margin:0 0 10px}
+label{display:block;font-size:14px;color:var(--tenue);margin:12px 0 6px}
+
+/* ---- campos de texto ---- */
+input[type=text]{width:100%;min-height:46px;padding:12px 14px;font:17px inherit;
+ border-radius:10px;border:1px solid var(--bd);background:var(--hueco);
+ color:var(--tinta);-webkit-user-select:text;user-select:text}
+input[type=text]:focus{outline:none;border-color:var(--oro)}
+input[type=text]::placeholder{color:rgba(242,232,213,.3)}
+
+/* ---- control segmentado (sustituye a los sliders) ---- */
+.knob{margin:0 0 14px}
+.krow{display:flex;justify-content:space-between;align-items:baseline;
+ font-size:15px;margin-bottom:7px}
+.kval{color:var(--oro);font-weight:600;font-size:14px}
+.seg{display:flex;background:var(--hueco);border-radius:10px;padding:2px;gap:2px}
+.seg button{flex:1;min-height:40px;border:0;border-radius:8px;background:transparent;
+ color:var(--tinta);font:600 15px inherit;cursor:pointer;
+ transition:background .18s ease,color .18s ease}
+.seg button.on{background:var(--card2);color:var(--oro);
+ box-shadow:0 1px 3px rgba(0,0,0,.45)}
+
+/* ---- botones ---- */
+button.go{width:100%;min-height:52px;padding:15px;font:800 18px inherit;letter-spacing:1px;
+ border:none;border-radius:12px;background:var(--oro);color:var(--bg);cursor:pointer;
+ margin-top:14px;transition:transform .12s ease,opacity .12s ease}
+button.go:active{transform:scale(.975)}
+button.go:disabled{opacity:.5}
+button.loca{width:100%;min-height:48px;padding:13px;font:800 15px inherit;letter-spacing:2px;
+ border:1.5px dashed var(--rojo);border-radius:12px;background:#2a1512;color:var(--rojo2);
+ cursor:pointer;margin-top:4px;transition:background .15s ease,color .15s ease}
+button.loca:active{background:var(--rojo);color:#fff}
+.mini{background:var(--card2);color:var(--tinta);border:1px solid var(--bd);
+ min-height:44px;padding:11px 15px;border-radius:11px;font:15px inherit;cursor:pointer;
+ margin:0 6px 6px 0}
+.mini.on{background:var(--oro);color:var(--bg);border-color:var(--oro)}
+.fila{display:flex;flex-wrap:wrap;gap:0}
+.fila .mini{flex:1 1 auto;min-width:96px;text-align:center}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}
+.rejilla .mini{margin:0;min-width:0;text-align:center;line-height:1.25}
+.rejilla .mini small{display:block;font-size:11px;opacity:.6;font-weight:400}
+
+/* ---- barra de pestañas inferior (patrón iOS) ---- */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+ background:rgba(20,17,14,.72);
+ -webkit-backdrop-filter:saturate(180%) blur(20px);
+ backdrop-filter:saturate(180%) blur(20px);
+ border-top:.5px solid var(--sep);
+ padding-bottom:env(safe-area-inset-bottom);
+ padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.tabbar button{flex:1;min-height:var(--barra);background:none;border:0;cursor:pointer;
+ color:var(--tenue);font:600 10px/1.15 inherit;letter-spacing:.2px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+ padding:4px 2px}
+.tabbar button.on{color:var(--oro)}
+.tabbar svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- hoja modal de resultados ---- */
+dialog.hoja{border:0;padding:0;background:transparent;max-width:640px;width:100%;
+ margin:auto auto 0;max-height:100dvh}
+dialog.hoja::backdrop{background:rgba(0,0,0,.55);
+ -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+dialog.hoja[open]{animation:subir .3s cubic-bezier(.32,.72,0,1)}
+dialog.hoja[open]::backdrop{animation:fundir .3s ease}
+@keyframes subir{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fundir{from{opacity:0}to{opacity:1}}
+.panel{background:rgba(30,26,21,.97);
+ -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+ border-top:.5px solid var(--sep);
+ border-radius:20px 20px 0 0;
+ padding:8px 18px calc(16px + env(safe-area-inset-bottom));
+ max-height:90dvh;display:flex;flex-direction:column}
+.grabber{width:36px;height:5px;border-radius:3px;background:rgba(242,232,213,.28);
+ margin:0 auto 10px;flex:0 0 auto}
+.cuerpo{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+ flex:1 1 auto;padding-bottom:4px}
+.acciones{display:flex;gap:8px;padding-top:12px;flex:0 0 auto;
+ border-top:.5px solid var(--sep);margin-top:10px}
+.acciones .mini{flex:1;margin:0;text-align:center}
+
+/* ---- contenido del resultado ---- */
+.stamp{display:inline-block;border:1.5px solid var(--rojo);color:var(--rojo);
+ padding:3px 10px;border-radius:6px;font:800 12px inherit;letter-spacing:2px;
+ transform:rotate(-3deg);margin-bottom:10px}
+.exp{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+ color:var(--tenue);margin-bottom:10px;letter-spacing:.5px}
+.out{white-space:pre-wrap;line-height:1.55;font-size:17px;
+ -webkit-user-select:text;user-select:text}
+
+/* ---- varios ---- */
+.foot{text-align:center;font-size:12px;color:rgba(242,232,213,.4);
+ margin:20px 0 4px;line-height:1.7}
+.cr{opacity:.75;margin-top:6px;letter-spacing:1px}
+.nota{margin-top:10px;opacity:.85;line-height:1.6}
+.hide{display:none!important}
+.cargando{text-align:center;padding:44px 0;color:var(--tenue)}
+.aviso{background:#2a1512;border-color:var(--rojo);font-size:13px;line-height:1.6}
+.aviso b{color:var(--rojo2)}
+
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+ dialog.hoja[open],dialog.hoja[open]::backdrop{animation:none}
+ button.go:active{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="cab"><svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="#c8a54a" stroke-width="5"/><circle cx="50" cy="50" r="37" fill="none" stroke="#c8a54a" stroke-width="2" stroke-dasharray="4 4" opacity=".7"/><path d="M30 68 V34 L50 54 L70 34 V68" fill="none" stroke="#c8a54a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><h1>MADRITZ</h1></header>
+<div class="sub">la IA que funciona sola, donde quieras, sin internet</div>
+<div id="cargando" class="cargando">preparando la máquina…</div>
+<div id="error" class="hide"></div>
+<main id="app" class="hide">
+<div id="aviso" class="hide"></div>
+<div class="card"><div class="knob"><div class="krow"><span>Delirio</span><span class="kval" id="v_delirio"></span></div><div class="seg" id="seg_delirio" data-mando="delirio" data-max="5"></div></div><div class="knob"><div class="krow"><span>Longitud</span><span class="kval" id="v_longitud"></span></div><div class="seg" id="seg_longitud" data-mando="longitud" data-max="3"></div></div><div class="knob"><div class="krow"><span>Sabiduría</span><span class="kval" id="v_sabiduria"></span></div><div class="seg" id="seg_sabiduria" data-mando="sabiduria" data-max="5"></div></div><button class="loca" id="bloca" type="button">MODO LOCURA</button></div>
+<section class="acto hide" id="a_conspiracion" data-acto="conspiracion"><div class="card"><p class="rotulo">CONSPIRACIONES</p><label for="tema_conspiracion">¿Sobre qué quieres una conspiración absurda?</label><input type="text" id="tema_conspiracion" placeholder="los calcetines que desaparecen" autocomplete="off" autocapitalize="none" autocorrect="off" enterkeyhint="go" maxlength="60"><div class="fila" style="margin-top:10px"><button class="mini" data-atajo="las palomas">las palomas</button><button class="mini" data-atajo="los deberes">los deberes</button><button class="mini" data-atajo="la luna">la luna</button><button class="mini" data-atajo="el brócoli">el brócoli</button></div><button class="go" data-generar="conspiracion">INVESTIGAR</button></div></section><section class="acto hide" id="a_madlibs" data-acto="madlibs"><div class="card"><p class="rotulo">RELLENA PALABRAS</p><label>Elige una historia y rellena los huecos</label><div class="fila" id="lista_madlibs"></div><div id="campos_madlibs"></div><button class="go" data-generar="madlibs">CREAR HISTORIA</button></div></section><section class="acto hide" id="a_horoscopo" data-acto="horoscopo"><div class="card"><p class="rotulo">HORÓSCOPO IMPOSIBLE</p><label>Elige tu signo</label><div class="rejilla" id="lista_horoscopo"></div><button class="go" data-generar="horoscopo">LEER EL FUTURO</button></div></section><section class="acto hide" id="a_diccionario" data-acto="diccionario"><div class="card"><p class="rotulo">EL DICCIONARIO DE MADRITZ</p><p class="nota" style="margin-top:2px">Una palabra que no existe, definida como si existiera.</p><button class="go" data-generar="diccionario">INVENTAR PALABRA</button></div></section>
+<footer class="foot">Todo esto es mentira y es una broma.<br>Las palabras raras se las inventa un modelo entrenado en este ordenador.<div class="cr">© 2026 bh3, inc.</div></footer>
+</main>
+</div>
+<nav class="tabbar hide" id="tabbar"><button data-tab="conspiracion" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.2 10-6.2S22 12 22 12s-3.6 6.2-10 6.2S2 12 2 12z"/><circle cx="12" cy="12" r="2.7"/></svg><span>Conspira</span></button><button data-tab="madlibs" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h4.5"/></svg><span>Historias</span></button><button data-tab="horoscopo" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.2 5.7L12 16.4 6.8 19.2 8 13.5 3.7 9.5l5.8-.7z"/></svg><span>Horóscopo</span></button><button data-tab="diccionario" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.2A2.2 2.2 0 0 1 6.7 3H19v18H6.7a2.2 2.2 0 0 1-2.2-2.2z"/><path d="M8.5 7.5h7M8.5 11h7"/></svg><span>Diccionario</span></button></nav>
+<dialog class="hoja" id="hoja"><div class="panel"><div class="grabber"></div><div class="cuerpo"><div class="stamp" id="h_sello"></div><div class="exp" id="h_exp"></div><div class="out" id="h_out"></div></div><div class="acciones"><button class="mini" id="h_otra">OTRA VEZ</button><button class="mini" id="h_comp">COMPARTIR</button><button class="mini" id="h_cerrar">Cerrar</button></div></div></dialog>
+<script src="plantillas.js"></script>
+<script src="inventor.js"></script>
+<script src="app.js"></script>
+</body></html>
