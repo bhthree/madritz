@@ -9,7 +9,7 @@
 //     versión nueva entra sola en cuanto haya conexión, y sin red sigue
 //     abriendo.
 //   · el resto → caché primero y revalidación en segundo plano.
-const CACHE='madritz-v3';
+const CACHE='madritz-v3.0';
 const FILES=['./','./index.html','./plantillas.js','./inventor.js','./app.js','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./splash-1290x2796.png','./splash-1179x2556.png','./splash-1170x2532.png','./splash-1125x2436.png','./splash-828x1792.png','./splash-750x1334.png'];
 
 self.addEventListener('install',e=>{

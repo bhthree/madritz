@@ -126,9 +126,18 @@ dialog.hoja[open]::backdrop{animation:fundir .3s ease}
  margin:0 auto 10px;flex:0 0 auto}
 .cuerpo{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
  flex:1 1 auto;padding-bottom:4px}
-.acciones{display:flex;gap:8px;padding-top:12px;flex:0 0 auto;
+.acciones{display:flex;flex-wrap:wrap;gap:8px;padding-top:12px;flex:0 0 auto;
  border-top:.5px solid var(--sep);margin-top:10px}
-.acciones .mini{flex:1;margin:0;text-align:center}
+.acciones .mini{flex:1 1 calc(33.333% - 8px);margin:0;text-align:center;min-width:86px}
+.acciones .mini.reproduciendo{color:var(--oro);border-color:var(--oro)}
+.auto-voz{display:flex;align-items:center;justify-content:space-between;gap:12px;
+ margin:4px 0 0;padding:11px 0 0;border-top:.5px solid var(--sep);color:var(--tenue);font-size:14px}
+.switch{position:relative;width:50px;height:30px;flex:0 0 50px}
+.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch span{position:absolute;inset:0;border-radius:15px;background:var(--hueco);border:1px solid var(--bd);transition:.2s}
+.switch span:after{content:"";position:absolute;width:24px;height:24px;left:2px;top:2px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0008;transition:.2s}
+.switch input:checked+span{background:var(--oro);border-color:var(--oro)}
+.switch input:checked+span:after{transform:translateX(20px)}
 
 /* ---- contenido del resultado ---- */
 .stamp{display:inline-block;border:1.5px solid var(--rojo);color:var(--rojo);
@@ -164,9 +173,9 @@ dialog.hoja[open]::backdrop{animation:fundir .3s ease}
 <div id="error" class="hide"></div>
 <main id="app" class="hide">
 <div id="aviso" class="hide"></div>
-<div class="card"><div class="knob"><div class="krow"><span>Delirio</span><span class="kval" id="v_delirio"></span></div><div class="seg" id="seg_delirio" data-mando="delirio" data-max="5"></div></div><div class="knob"><div class="krow"><span>Longitud</span><span class="kval" id="v_longitud"></span></div><div class="seg" id="seg_longitud" data-mando="longitud" data-max="3"></div></div><div class="knob"><div class="krow"><span>Sabiduría</span><span class="kval" id="v_sabiduria"></span></div><div class="seg" id="seg_sabiduria" data-mando="sabiduria" data-max="5"></div></div><button class="loca" id="bloca" type="button">MODO LOCURA</button></div>
+<div class="card"><div class="knob"><div class="krow"><span>Delirio</span><span class="kval" id="v_delirio"></span></div><div class="seg" id="seg_delirio" data-mando="delirio" data-max="5"></div></div><div class="knob"><div class="krow"><span>Longitud</span><span class="kval" id="v_longitud"></span></div><div class="seg" id="seg_longitud" data-mando="longitud" data-max="3"></div></div><div class="knob"><div class="krow"><span>Sabiduría</span><span class="kval" id="v_sabiduria"></span></div><div class="seg" id="seg_sabiduria" data-mando="sabiduria" data-max="5"></div></div><button class="loca" id="bloca" type="button">MODO LOCURA</button><div class="auto-voz"><span>Leer automáticamente</span><label class="switch" aria-label="Leer automáticamente"><input type="checkbox" id="auto_leer"><span></span></label></div></div>
 <section class="acto hide" id="a_conspiracion" data-acto="conspiracion"><div class="card"><p class="rotulo">CONSPIRACIONES</p><label for="tema_conspiracion">¿Sobre qué quieres una conspiración absurda?</label><input type="text" id="tema_conspiracion" placeholder="los calcetines que desaparecen" autocomplete="off" autocapitalize="none" autocorrect="off" enterkeyhint="go" maxlength="60"><div class="fila" style="margin-top:10px"><button class="mini" data-atajo="las palomas">las palomas</button><button class="mini" data-atajo="los deberes">los deberes</button><button class="mini" data-atajo="la luna">la luna</button><button class="mini" data-atajo="el brócoli">el brócoli</button></div><button class="go" data-generar="conspiracion">INVESTIGAR</button></div></section><section class="acto hide" id="a_madlibs" data-acto="madlibs"><div class="card"><p class="rotulo">RELLENA PALABRAS</p><label>Elige una historia y rellena los huecos</label><div class="fila" id="lista_madlibs"></div><div id="campos_madlibs"></div><button class="go" data-generar="madlibs">CREAR HISTORIA</button></div></section><section class="acto hide" id="a_horoscopo" data-acto="horoscopo"><div class="card"><p class="rotulo">HORÓSCOPO IMPOSIBLE</p><label>Elige tu signo</label><div class="rejilla" id="lista_horoscopo"></div><button class="go" data-generar="horoscopo">LEER EL FUTURO</button></div></section><section class="acto hide" id="a_diccionario" data-acto="diccionario"><div class="card"><p class="rotulo">EL DICCIONARIO DE MADRITZ</p><p class="nota" style="margin-top:2px">Una palabra que no existe, definida como si existiera.</p><button class="go" data-generar="diccionario">INVENTAR PALABRA</button></div></section>
-<div class="card"><label><input type="checkbox" id="auto_leer"> Leer automáticamente</label></div><footer class="foot">Todo esto es mentira y es una broma.<br>Las palabras raras se las inventa un modelo entrenado en este ordenador.<div class="cr">© 2026 bh3, inc.</div></footer>
+<footer class="foot">Todo esto es mentira y es una broma.<br>Las palabras raras se las inventa un modelo entrenado en este ordenador.<div class="cr">© 2026 bh3, inc.</div></footer>
 </main>
 </div>
 <nav class="tabbar hide" id="tabbar"><button data-tab="conspiracion" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.2 10-6.2S22 12 22 12s-3.6 6.2-10 6.2S2 12 2 12z"/><circle cx="12" cy="12" r="2.7"/></svg><span>Conspira</span></button><button data-tab="madlibs" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h4.5"/></svg><span>Historias</span></button><button data-tab="horoscopo" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.2 5.7L12 16.4 6.8 19.2 8 13.5 3.7 9.5l5.8-.7z"/></svg><span>Horóscopo</span></button><button data-tab="diccionario" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.2A2.2 2.2 0 0 1 6.7 3H19v18H6.7a2.2 2.2 0 0 1-2.2-2.2z"/><path d="M8.5 7.5h7M8.5 11h7"/></svg><span>Diccionario</span></button></nav>

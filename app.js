@@ -61,7 +61,16 @@ function bloqueado(tema){
 // ---- Memoria: gemela de plantillas.Memoria ----
 // No repetir lo salido hace poco ENTRE tiradas, no solo dentro de una.
 class Memoria{
-  constructor(n=4){this.n=n;this.vistos={};}
+  constructor(n=4,storageKey=null){
+    this.n=n;this.storageKey=storageKey;this.vistos={};
+    if(storageKey&&typeof localStorage!=="undefined"){
+      try{this.vistos=JSON.parse(localStorage.getItem(storageKey)||"{}")||{};}catch(e){this.vistos={};}
+    }
+  }
+  _guardar(){
+    if(!this.storageKey||typeof localStorage==="undefined")return;
+    try{localStorage.setItem(this.storageKey,JSON.stringify(this.vistos));}catch(e){}
+  }
   _tope(l){return Math.max(0,Math.min(this.n,l.length-1));}
   elegir(lista,clave){
     if(!lista||!lista.length)return null;
@@ -71,7 +80,22 @@ class Memoria{
     const x=pool[Math.floor(Math.random()*pool.length)];
     v.push(x);
     while(v.length>this._tope(lista))v.shift();
-    return x;
+    this._guardar();return x;
+  }
+  elegirEquilibrado(lista,clave){
+    if(!lista||!lista.length)return null;
+    const v=this.vistos[clave]||(this.vistos[clave]=[]);
+    const nEvitar=Math.min(2,Math.max(0,lista.length-1));
+    const evitar=v.slice(-nEvitar);
+    const igual=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+    let cand=lista.filter(x=>!evitar.some(y=>igual(y,x)));
+    if(!cand.length)cand=lista.slice();
+    const cuenta=x=>v.reduce((n,y)=>n+(igual(y,x)?1:0),0);
+    const minimo=Math.min.apply(null,cand.map(cuenta));
+    cand=cand.filter(x=>cuenta(x)===minimo);
+    const x=cand[Math.floor(Math.random()*cand.length)];
+    v.push(x);while(v.length>this.n)v.shift();
+    this._guardar();return x;
   }
   muestra(lista,k,clave){
     const out=[];
@@ -83,16 +107,18 @@ class Memoria{
       const cand=frescos.length?frescos:pool;
       if(!cand.length)break;
       const x=cand[Math.floor(Math.random()*cand.length)];
-      out.push(x); v.push(x);
+      out.push(x);v.push(x);
       while(v.length>this._tope(lista))v.shift();
     }
-    return out;
+    this._guardar();return out;
   }
 }
-
 let INV=null;
-const MEM=new Memoria(4);
-const el=(lista,clave)=>MEM.elegir(lista,clave);
+const MEM_E=new Memoria(24,"madritz_v3_estructura");
+const MEM_L=new Memoria(6,"madritz_v3_local");
+const el=(lista,clave)=>MEM_L.elegir(lista,clave);
+const es=(lista,clave)=>MEM_E.elegirEquilibrado(lista,clave);
+const pozo=(perfil,clave,reserva)=>(perfil&&perfil[clave]&&perfil[clave].length)?perfil[clave]:reserva;
 const sustI=d=>INV.sustantivo(d);
 const adjI=d=>INV.adjetivo(d);
 
@@ -116,26 +142,32 @@ function conspiracion(tema,delirio,longitud,sabiduria){
   }
   const base={tema:tema,tema_may:tema.toUpperCase(),
               tema_de:contraer("de",tema),tema_a:contraer("a",tema)};
+  // Un narrador oculto y coherente por tirada. MEM_E evita repetirlo hasta
+  // haber recorrido los otros cinco; su historial persiste en localStorage.
+  const perfilId=es(Object.keys(T.PERFILES),"perfil");
+  const perfil=T.PERFILES[perfilId];
   const partes=[];
   const bloque=t=>{partes.push(contraerTexto(t));partes.push("");};
   const mezcla=extra=>Object.assign({},base,extra);
 
-  for(const nombre of el(T.ESQUELETOS,"esqueleto")){
-    if(nombre==="apertura"){ bloque(el(T.APERTURAS,"apertura")); }
+  for(const nombre of es(T.ESQUELETOS,"esqueleto")){
+    if(nombre==="apertura"){ bloque(es(pozo(perfil,"aperturas",T.APERTURAS),"apertura_"+perfilId)); }
 
-    else if(nombre==="titular"){ bloque(rellena(el(T.TITULARES,"titular"),base)); }
+    else if(nombre==="titular"){ bloque(rellena(es(T.TITULARES,"titular"),base)); }
 
     else if(nombre==="nucleo"){
-      const grupo=el(T.GRUPOS,"grupo"),verbo=el(T.VERBOS,"verbo"),
+      const grupo=el(pozo(perfil,"grupos",T.GRUPOS),"grupo_"+perfilId),
+            verbo=el(pozo(perfil,"verbos",T.VERBOS),"verbo_"+perfilId),
             tiempo=el(T.TIEMPOS,"tiempo");
       // «lo {verbo}» solo funciona con verbos de una palabra.
-      const simples=T.VERBOS.filter(v=>v.indexOf(" ")<0);
-      bloque(rellena(el(T.NUCLEOS,"nucleo"),mezcla({
+      let simples=pozo(perfil,"verbos",T.VERBOS).filter(v=>v.indexOf(" ")<0);
+      if(!simples.length)simples=T.VERBOS.filter(v=>v.indexOf(" ")<0);
+      bloque(rellena(es(pozo(perfil,"nucleos",T.NUCLEOS),"nucleo_"+perfilId),mezcla({
         grupo:grupo,grupo_may:mayuscula(grupo),
         verbo:verbo,verbo_may:mayuscula(verbo),
         verbo_corto:el(simples,"verbo_corto"),
         tiempo:tiempo,tiempo_may:mayuscula(tiempo),
-        lugar:el(T.LUGARES,"lugar"),sust:sustI(d),adj:adjI(d)})));
+        lugar:el(pozo(perfil,"lugares",T.LUGARES),"lugar_"+perfilId),sust:sustI(d),adj:adjI(d)})));
     }
 
     else if(nombre==="pruebas"){
@@ -143,7 +175,7 @@ function conspiracion(tema,delirio,longitud,sabiduria){
       // POZO ACUMULATIVO: el nivel d hereda 1..d.
       let pozo=[];
       for(let k=1;k<=d;k++)pozo=pozo.concat(T.PRUEBAS[String(k)]);
-      MEM.muestra(pozo,n,"prueba").forEach(function(pr,i){
+      MEM_E.muestra(pozo,n,"prueba").forEach(function(pr,i){
         // puntuar(), no un "." fijo: hay pruebas que ya acaban en «?».
         bloque((i===0?"LA PRUEBA":"PRUEBA "+(i+1))+": "+puntuar(rellena(pr,base)));
       });
@@ -152,28 +184,29 @@ function conspiracion(tema,delirio,longitud,sabiduria){
     else if(nombre==="estudio"){
       if(s<2)continue;
       const c=cita(s,d);
-      let est=rellena(el(T.ESTUDIOS,"estudio"),mezcla({
+      let est=rellena(es(pozo(perfil,"estudios",T.ESTUDIOS),"estudio_"+perfilId),mezcla({
         adj:adjI(d),sust:sustI(d),cita:c,cita_may:mayuscula(c),
-        cita_de:contraer("de",c),pct:el(T.PORCENTAJES,"pct")}));
-      if(s>=3)est=el(T.CONECTORES,"con")+" "+est[0].toLowerCase()+est.slice(1);
+        cita_de:contraer("de",c),pct:el(T.PORCENTAJES,"pct"),
+        lugar:el(pozo(perfil,"lugares",T.LUGARES),"lugar_est_"+perfilId)}));
+      if(s>=3)est=es(pozo(perfil,"conectores",T.CONECTORES),"con_"+perfilId)+" "+est[0].toLowerCase()+est.slice(1);
       if(s>=5)est+=" "+mayuscula(el(T.LATINAJOS,"latin"))+".";
       bloque(est);
     }
 
     else if(nombre==="literatura"){
       if(s<4)continue;
-      bloque(el(T.CONECTORES,"con")+" "+rellena(el(T.LITERATURA,"lit"),mezcla({
+      bloque(es(pozo(perfil,"conectores",T.CONECTORES),"con_"+perfilId)+" "+rellena(es(T.LITERATURA,"lit"),mezcla({
         sust:sustI(d),adj:adjI(d),periodo:el(T.PERIODOS,"periodo"),
-        retorica_may:puntuar(mayuscula(el(T.RETORICAS,"ret")))})));
+        retorica_may:puntuar(mayuscula(es(pozo(perfil,"retoricas",T.RETORICAS),"ret_"+perfilId)))})));
     }
 
-    else if(nombre==="retorica"){ bloque(puntuar(mayuscula(el(T.RETORICAS,"ret")))); }
+    else if(nombre==="retorica"){ bloque(puntuar(mayuscula(es(pozo(perfil,"retoricas",T.RETORICAS),"ret_"+perfilId)))); }
 
     else if(nombre==="desmentido"){
-      bloque(rellena(el(T.DESMENTIDOS,"desm"),mezcla({pega:el(T.PEGAS,"pega")})));
+      bloque(rellena(es(T.DESMENTIDOS,"desm"),mezcla({pega:el(T.PEGAS,"pega")})));
     }
 
-    else if(nombre==="cierre"){ partes.push(el(T.CIERRES,"cierre")); }
+    else if(nombre==="cierre"){ partes.push(es(pozo(perfil,"cierres",T.CIERRES),"cierre_"+perfilId)); }
   }
   while(partes.length&&partes[partes.length-1]==="")partes.pop();
 
@@ -191,7 +224,7 @@ function madlibs(hid,palabras,delirio,longitud,sabiduria){
   const datos={};
   h.campos.forEach(function(c){
     let v=((palabras||{})[c.clave]||"").trim();
-    // v2: las palabras del usuario también pasan por el filtro.
+    // v3: las palabras del usuario también pasan por el filtro.
     if(v&&bloqueado(v))v="";
     datos[c.clave]=v?v.slice(0,40):c.ejemplo;
   });
@@ -204,7 +237,7 @@ function madlibs(hid,palabras,delirio,longitud,sabiduria){
 
   let txt=h.texto;
   if(l>=2&&h.extras&&h.extras.length)
-    txt+="\n\n"+MEM.muestra(h.extras,(l===2?1:3),"extra_"+h.id).join("\n\n");
+    txt+="\n\n"+MEM_L.muestra(h.extras,(l===2?1:3),"extra_"+h.id).join("\n\n");
   if(s>=3&&h.burocracia){
     txt+=h.burocracia;
     if(s>=5)txt+="\n(Documento sujeto a revisión por el Tribunal de "+
@@ -230,7 +263,7 @@ function horoscopo(signoId,delirio,longitud,sabiduria){
   partes.push(rellena(el(T.HAPERTURAS,"hap"),df())); partes.push("");
 
   const n={1:2,2:4,3:6}[l];
-  const elegidas=MEM.muestra(T.AREAS,n,"area");
+  const elegidas=MEM_L.muestra(T.AREAS,n,"area");
   T.AREAS.filter(a=>elegidas.indexOf(a)>=0).forEach(function(a){
     partes.push(a.titulo);
     partes.push(rellena(el(a.frases,"fr_"+a.clave),df()));
@@ -270,7 +303,7 @@ function diccionario(delirio,longitud,sabiduria){
     partes.push("");
   }
   const n={1:1,2:2,3:4}[l];
-  MEM.muestra(T.ACEPCIONES,n,"acep").forEach(function(ac,i){
+  MEM_L.muestra(T.ACEPCIONES,n,"acep").forEach(function(ac,i){
     partes.push((i+1)+". "+rellena(ac,{adj:adjI(d)}));
     if(s>=2||i===0)
       partes.push("   "+rellena(el(T.EJEMPLOS,"ejem"),
@@ -302,15 +335,8 @@ const MOTOR={
 
 
 // ---- estado ----
-var ACTO=null,
-    SEL={},
-    MANDOS={delirio:3,longitud:2,sabiduria:2},
-    ULTIMO=null;
-
-var AUTO_LEER=false;
-var HABLANDO=false;
-var PAUSADO=false;
-var UTT=null;
+var ACTO=null, SEL={}, MANDOS={delirio:3,longitud:2,sabiduria:2}, ULTIMO=null;
+var AUTO_LEER=false, HABLANDO=false, PAUSADO=false, UTT=null;
 var $=function(s){return document.querySelector(s);};
 var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
 
@@ -420,87 +446,58 @@ function abreHoja(sello,exp,texto){
   var h=$("#hoja");
   if(!h.open){ if(h.showModal)h.showModal(); else h.setAttribute("open",""); }
   $(".cuerpo").scrollTop=0;
-      if(AUTO_LEER){
-
-        setTimeout(function(){
-
-            leerResultado();
-
-        },200);
-    }
+  if(AUTO_LEER)setTimeout(leerResultado,220);
 }
-function cierraHoja(){var h=$("#hoja"); if(h.close)h.close(); else h.removeAttribute("open");}
+function cierraHoja(){detenerLectura();var h=$("#hoja"); if(h.close)h.close(); else h.removeAttribute("open");}
 
-function textoActual(){
-    return $("#h_out").textContent || "";
+// ---- lectura en voz alta: usa la voz del sistema (iOS/macOS/Android) ----
+function textoActual(){return $("#h_out").textContent||"";}
+function estadoVoz(){
+  var p=$("#h_pausa"), l=$("#h_leer");
+  if(p)p.textContent=PAUSADO?T.UI.seguir:T.UI.pausa;
+  if(l)l.classList.toggle("reproduciendo",HABLANDO&&!PAUSADO);
 }
-
 function detenerLectura(){
-    try{
-        speechSynthesis.cancel();
-    }catch(e){}
-    HABLANDO=false;
-    PAUSADO=false;
-
-    var b=$("#h_pausa");
-    if(b) b.textContent=T.UI.pausa;
+  try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}
+  HABLANDO=false; PAUSADO=false; UTT=null; estadoVoz();
 }
-
+function vozEspanola(){
+  if(!window.speechSynthesis)return null;
+  var voces=window.speechSynthesis.getVoices()||[];
+  return voces.find(function(v){return /^es-ES$/i.test(v.lang);})
+      || voces.find(function(v){return /^es(-|$)/i.test(v.lang);})
+      || voces.find(function(v){return /^es/i.test(v.lang);})
+      || null;
+}
 function leerResultado(){
-
-    if(!window.speechSynthesis)
-        return;
-
-    detenerLectura();
-
-    UTT = new SpeechSynthesisUtterance(textoActual());
-
-    UTT.lang="es-ES";
-    UTT.rate=1.0;
-    UTT.pitch=1.0;
-    UTT.volume=1.0;
-
-    UTT.onend=function(){
-        HABLANDO=false;
-        PAUSADO=false;
-
-        var b=$("#h_pausa");
-        if(b) b.textContent=T.UI.pausa;
-    };
-
-    HABLANDO=true;
-    speechSynthesis.speak(UTT);
+  if(!window.speechSynthesis||typeof SpeechSynthesisUtterance==="undefined"){
+    var b=$("#h_leer"), anterior=b.textContent;
+    b.textContent=T.UI.voz_no_disponible;
+    setTimeout(function(){b.textContent=anterior;},2200);
+    return;
+  }
+  detenerLectura();
+  var texto=textoActual(); if(!texto)return;
+  UTT=new SpeechSynthesisUtterance(texto);
+  UTT.lang="es-ES"; UTT.rate=1.0; UTT.pitch=1.0; UTT.volume=1.0;
+  var voz=vozEspanola(); if(voz)UTT.voice=voz;
+  UTT.onstart=function(){HABLANDO=true;PAUSADO=false;estadoVoz();};
+  UTT.onend=function(){HABLANDO=false;PAUSADO=false;UTT=null;estadoVoz();};
+  UTT.onerror=function(e){
+    // «canceled» e «interrupted» son normales al pulsar STOP, OTRA VEZ o CERRAR.
+    if(!e||["canceled","interrupted"].indexOf(e.error)<0)console.warn("Madritz voz:",e&&e.error);
+    HABLANDO=false;PAUSADO=false;UTT=null;estadoVoz();
+  };
+  HABLANDO=true; estadoVoz();
+  window.speechSynthesis.speak(UTT);
 }
-
 function pausaLectura(){
-
-    if(!window.speechSynthesis)
-        return;
-
-    var b=$("#h_pausa");
-
-    if(HABLANDO && !PAUSADO){
-
-        speechSynthesis.pause();
-
-        PAUSADO=true;
-
-        if(b)
-            b.textContent=T.UI.seguir;
-
-        return;
-    }
-
-    if(PAUSADO){
-
-        speechSynthesis.resume();
-
-        PAUSADO=false;
-
-        if(b)
-            b.textContent=T.UI.pausa;
-    }
+  if(!window.speechSynthesis||!HABLANDO)return;
+  if(PAUSADO){window.speechSynthesis.resume();PAUSADO=false;}
+  else{window.speechSynthesis.pause();PAUSADO=true;}
+  estadoVoz();
 }
+
 // ---- compartir: la hoja de compartir REAL de iOS ----
 // Tres líneas y es lo que más acerca esto a una app nativa. Si el
 // dispositivo no la trae, copiamos al portapapeles y lo decimos.
@@ -542,63 +539,29 @@ function montaUI(){
   $("#bloca").addEventListener("click",function(){
     MANDOS={delirio:5,longitud:3,sabiduria:5}; pintaMandos();
     if(ACTO)generar(ACTO);});
-  $("#h_otra").addEventListener("click",function(){
-
-    detenerLectura();
-
-    if(ULTIMO)
-        generar(ULTIMO);
-});
-  
+  $("#h_otra").addEventListener("click",function(){detenerLectura();if(ULTIMO)generar(ULTIMO);});
+  $("#h_leer").addEventListener("click",leerResultado);
+  $("#h_pausa").addEventListener("click",pausaLectura);
+  $("#h_stop").addEventListener("click",detenerLectura);
   $("#h_comp").addEventListener("click",compartir);
-  $("#h_cerrar").addEventListener("click",function(){
-
-    detenerLectura();
-
-    cierraHoja();
-});
-
-$("#h_leer").addEventListener(
-    "click",
-    leerResultado
-);
-
-$("#h_pausa").addEventListener(
-    "click",
-    pausaLectura
-);
-
-$("#h_stop").addEventListener(
-    "click",
-    detenerLectura
-);
-  
+  $("#h_cerrar").addEventListener("click",cierraHoja);
   // cerrar tocando fuera del panel
   $("#hoja").addEventListener("click",function(e){if(e.target===$("#hoja"))cierraHoja();});
-    AUTO_LEER =
-    localStorage.getItem("auto_leer")==="1";
- 
-    $("#auto_leer").checked=AUTO_LEER;
- 
-    $("#auto_leer").addEventListener(
-    "change",
-    function(){
- 
+  try{AUTO_LEER=localStorage.getItem("madritz_auto_leer")==="1";}catch(e){AUTO_LEER=false;}
+  $("#auto_leer").checked=AUTO_LEER;
+  $("#auto_leer").addEventListener("change",function(){
     AUTO_LEER=this.checked;
- 
-    localStorage.setItem(
-    "auto_leer",
-    AUTO_LEER ? "1" : "0"
-    );
-    }
-    );
+    try{localStorage.setItem("madritz_auto_leer",AUTO_LEER?"1":"0");}catch(e){}
+    if(!AUTO_LEER)detenerLectura();
+  });
+  // Safari puede entregar la lista de voces después del arranque. Esta llamada
+  // calienta el catálogo sin mostrar ningún selector al usuario.
+  if(window.speechSynthesis){window.speechSynthesis.getVoices();}
   ver(T.ACTOS[0].id);
   $("#cargando").className="hide";
   $("#app").className="";
   $("#tabbar").className="tabbar";
 }
-
-
 function averia(titulo,detalle,ayuda){
   try{$("#cargando").className="hide";}catch(e){}
   var d=document.getElementById("error");

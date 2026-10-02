@@ -1,17 +1,19 @@
 // GENERADO POR build_pwa.py — no editar a mano.
 // Edita plantillas.py y ejecuta: python3 build_pwa.py
 const T = {
+ "VERSION": "3.0",
  "UI": {
   "titulo": "MADRITZ",
   "subtitulo": "la IA que funciona sola, donde quieras, sin internet",
   "locura": "MODO LOCURA",
   "otra": "OTRA VEZ",
-  "compartir": "COMPARTIR",
   "leer": "LEER",
   "pausa": "PAUSA",
   "seguir": "SEGUIR",
-  "stop": "STOP",
+  "detener": "STOP",
   "auto_leer": "Leer automáticamente",
+  "voz_no_disponible": "La lectura en voz alta no está disponible en este navegador.",
+  "compartir": "COMPARTIR",
   "copiar": "COPIAR",
   "copiado": "COPIADO",
   "cerrar": "CERRAR",
@@ -316,6 +318,446 @@ const T = {
    "burocracia": "\n\n— — —\nANEXO TÉCNICO · Norma {expediente}\nProducto conforme a la directiva de {sust_inv3}.\nNivel de {sust_inv4} certificado: {num2} (escala {adj_inv2}).\nConserve este anexo. El fabricante no responde de nada."
   }
  ],
+ "PERFILES": {
+  "academico": {
+   "nombre": "académico",
+   "aperturas": [
+    "Conviene empezar por una precisión metodológica.",
+    "He revisado la bibliografía. El silencio es notable.",
+    "Lo siguiente no es una opinión: es una hipótesis incómoda.",
+    "Nadie ha hecho todavía la pregunta correcta.",
+    "La comunidad especializada lleva años evitando este asunto.",
+    "Empecemos por los datos, que ya son bastante raros."
+   ],
+   "grupos": [
+    "los revisores anónimos del comité",
+    "tres catedráticos sin despacho",
+    "los becarios del laboratorio nocturno",
+    "los integrantes del claustro de profesores eméritos",
+    "los archiveros de la facultad cerrada",
+    "los metodólogos del pasillo norte",
+    "los autores de una nota al pie interminable",
+    "los evaluadores del índice secreto"
+   ],
+   "verbos": [
+    "documentan",
+    "reclasifican",
+    "observan sistemáticamente",
+    "someten a revisión",
+    "miden sin publicar",
+    "replican en secreto",
+    "catalogan por pares",
+    "citan selectivamente"
+   ],
+   "lugares": [
+    "el sótano de una facultad sin alumnos",
+    "un laboratorio con la luz siempre encendida",
+    "el anexo B de una biblioteca universitaria",
+    "una sala de tesis nunca defendidas",
+    "el archivo de una revista que dejó de publicarse",
+    "la planta técnica de un observatorio"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. Trabajan desde {lugar} y denominan el fenómeno «{sust} {adj}».",
+    "La hipótesis dominante oculta un detalle: {grupo} {verbo} {tema} desde {lugar}. En la literatura figura como «{sust} {adj}».",
+    "{tiempo_may}, {grupo} {verbo} {tema}. El programa se coordina en {lugar} bajo la referencia «{sust} {adj}».",
+    "La muestra no es casual. {grupo_may} {verbo} {tema} desde {lugar}; el término técnico es «{sust} {adj}»."
+   ],
+   "estudios": [
+    "{cita_may} detecta {sust} {adj} en el {pct}% de las observaciones sobre {tema}.",
+    "Una revisión por pares {cita_de} sitúa la correlación entre {tema} y {sust} en el {pct}%.",
+    "La serie longitudinal {cita_de} identifica un patrón {adj} en el {pct}% de los registros.",
+    "Según {cita}, la incidencia de {sust} alrededor {tema_de} alcanza el {pct}%."
+   ],
+   "retoricas": [
+    "¿por qué no aparece en ningún manual?",
+    "la ausencia de bibliografía también es un dato",
+    "si la hipótesis fuera falsa, alguien habría publicado la refutación",
+    "una anomalía es ruido; tantas anomalías son una línea de investigación",
+    "no confundan consenso con evidencia",
+    "la revisión por pares no revisa lo que no se envía"
+   ],
+   "cierres": [
+    "Queda abierta la línea de investigación.",
+    "La conclusión provisional es bastante definitiva.",
+    "Se recomienda replicar el experimento. Con otra universidad.",
+    "La bibliografía existe. Encontrarla es otro asunto.",
+    "Fin de la comunicación científica."
+   ],
+   "conectores": [
+    "Metodológicamente,",
+    "La evidencia acumulada indica que",
+    "Conviene aislar un factor:",
+    "En términos estrictamente técnicos,",
+    "La literatura gris añade que"
+   ]
+  },
+  "burocratico": {
+   "nombre": "burocrático",
+   "aperturas": [
+    "Se abre expediente por hechos que no constaban en el formulario.",
+    "La presente comunicación tiene carácter urgente y bastante absurdo.",
+    "Consta en acta que nadie quiso firmar esto.",
+    "Por orden de la unidad competente, procedemos.",
+    "El asunto llevaba años en la bandeja equivocada.",
+    "Se informa, a todos los efectos, de lo siguiente."
+   ],
+   "grupos": [
+    "los técnicos de la ventanilla siete",
+    "los miembros de la comisión interdepartamental",
+    "los inspectores del registro auxiliar",
+    "los agentes del negociado de asuntos imprecisos",
+    "los funcionarios del turno fantasma",
+    "los delegados de la mesa sectorial de objetos perdidos",
+    "los responsables de compulsar fotocopias",
+    "los miembros del comité de seguimiento sin seguimiento"
+   ],
+   "verbos": [
+    "tramitan",
+    "sellan por duplicado",
+    "archivan provisionalmente",
+    "subsanan sin aviso",
+    "registran fuera de plazo",
+    "derivan al departamento incorrecto",
+    "protocolizan",
+    "fiscalizan en silencio"
+   ],
+   "lugares": [
+    "la ventanilla que cierra a las once",
+    "un archivo con tres llaves distintas",
+    "el despacho 4B de un edificio sin planta cuarta",
+    "la carpeta azul del registro central",
+    "un sótano lleno de formularios caducados",
+    "la sede provisional que lleva veinte años abierta"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. El procedimiento se gestiona desde {lugar} con código «{sust} {adj}».",
+    "Según consta en el expediente, {grupo} {verbo} {tema} desde {lugar}. Denominación administrativa: «{sust} {adj}».",
+    "{tiempo_may}, {tema} figura a cargo de {grupo}. Lo {verbo_corto} desde {lugar} bajo la referencia «{sust} {adj}».",
+    "La competencia sobre {tema} fue transferida a {grupo}, que {verbo} el asunto desde {lugar}. Clave: «{sust} {adj}»."
+   ],
+   "estudios": [
+    "El acta {adj} {cita_de} registra {sust} en el {pct}% de los expedientes sobre {tema}.",
+    "{cita_may} certifica un {pct}% de incidencias de {sust} asociadas {tema_a}.",
+    "La memoria anual {cita_de} reconoce {sust} {adj} en el {pct}% de los casos tramitados.",
+    "Un informe no vinculante de {cita} eleva al {pct}% la presencia de {sust} en {tema}."
+   ],
+   "retoricas": [
+    "si no existe, ¿por qué tiene número de expediente?",
+    "nadie archiva por triplicado una casualidad",
+    "la falta de sello no invalida el fondo del asunto",
+    "el silencio administrativo también responde",
+    "pregunte en la ventanilla y observe cómo miran al suelo",
+    "esto no prescribe hasta que lo digan ellos"
+   ],
+   "cierres": [
+    "Notifíquese y archívese. Sobre todo archívese.",
+    "Contra esta verdad no cabe recurso.",
+    "Queda usted formalmente informado.",
+    "El expediente seguirá abierto aunque digan lo contrario.",
+    "Firmado: alguien con competencias suficientes."
+   ],
+   "conectores": [
+    "A efectos meramente informativos,",
+    "Conforme al anexo reservado,",
+    "Sin perjuicio de lo anterior,",
+    "Visto el informe preceptivo,",
+    "Por acumulación de indicios,"
+   ]
+  },
+  "corporativo": {
+   "nombre": "corporativo",
+   "aperturas": [
+    "Vamos a alinear expectativas antes de que alguien comparta pantalla.",
+    "Hay un dato que no llegó al comité ejecutivo.",
+    "Esto empezó como un piloto y ahora controla el negocio.",
+    "La presentación oficial omite una diapositiva.",
+    "El plan estratégico tiene una nota al pie que nadie leyó.",
+    "Necesitamos hablar del elefante en la videollamada."
+   ],
+   "grupos": [
+    "los consultores del comité de transformación",
+    "los integrantes del equipo global de sinergias",
+    "los responsables de experiencia del usuario invisible",
+    "tres vicepresidentes de estrategia",
+    "los miembros del grupo de trabajo que nunca se disolvió",
+    "los custodios del cuadro de mando",
+    "los responsables del departamento de innovación retrospectiva",
+    "los facilitadores de la reunión permanente"
+   ],
+   "verbos": [
+    "monetizan",
+    "escalan",
+    "alinean estratégicamente",
+    "integran en el roadmap",
+    "convierten en indicador",
+    "optimizan sin preguntar",
+    "externalizan",
+    "presentan como oportunidad"
+   ],
+   "lugares": [
+    "una sala llamada Everest",
+    "el servidor de una consultora sin oficina",
+    "la diapositiva 47 del plan estratégico",
+    "un espacio flexible sin mesas",
+    "el canal privado de un comité ejecutivo",
+    "la nube de un proveedor que cambió de nombre"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. La iniciativa opera desde {lugar} bajo el nombre «{sust} {adj}».",
+    "El verdadero stakeholder es {grupo}. {verbo_may} {tema} desde {lugar} y lo reportan como «{sust} {adj}».",
+    "{tema_may} forma parte de un roadmap oculto: {grupo} lo {verbo_corto} {tiempo} desde {lugar}.",
+    "Lo llaman transformación, pero {grupo} {verbo} {tema} desde {lugar}. Código interno: «{sust} {adj}»."
+   ],
+   "estudios": [
+    "El dashboard {adj} {cita_de} sitúa el impacto de {sust} en un {pct}% sobre {tema}.",
+    "{cita_may} reporta un {pct}% de mejora aparente tras introducir {sust} en {tema}.",
+    "La métrica norte de {cita} vincula {tema} con {sust} {adj} en el {pct}% de los ciclos.",
+    "Un benchmark de {cita} detecta {sust} en el {pct}% de los entregables sobre {tema}."
+   ],
+   "retoricas": [
+    "¿quién aprobó el business case?",
+    "si no fuera estratégico, no tendría logo",
+    "el KPI sube justo cuando dejan de medirlo",
+    "nadie agenda cuarenta minutos para una coincidencia",
+    "llamarlo oportunidad no lo hace menos sospechoso",
+    "revise quién figura como owner y todo encaja"
+   ],
+   "cierres": [
+    "Lo dejamos como siguiente paso.",
+    "Alineados, entonces.",
+    "Circulen esto antes del próximo comité.",
+    "La verdad queda pendiente de validación.",
+    "Gracias a todos por el tiempo. Especialmente a ellos."
+   ],
+   "conectores": [
+    "A nivel estratégico,",
+    "Si miramos el dato agregado,",
+    "Para ponerlo en contexto,",
+    "Desde una perspectiva transversal,",
+    "Como quick win conceptual,"
+   ]
+  },
+  "domestico": {
+   "nombre": "doméstico",
+   "aperturas": [
+    "Esto empezó en una cocina y nadie me convencerá de lo contrario.",
+    "Pregunta en cualquier portal. Todos saben algo.",
+    "Llevo observándolo desde la ventana del salón.",
+    "Hay cosas que solo se entienden hablando con los vecinos.",
+    "Todo parecía normal hasta que alguien movió el felpudo.",
+    "La prueba estaba en casa desde el principio."
+   ],
+   "grupos": [
+    "los vecinos del quinto",
+    "las personas que guardan bolsas dentro de bolsas",
+    "los integrantes del chat de la comunidad",
+    "los dueños de tápers sin tapa",
+    "los que riegan cuando ya ha llovido",
+    "las personas que oyen la lavadora de noche",
+    "los miembros del consejo informal del ascensor",
+    "los custodios del mando a distancia"
+   ],
+   "verbos": [
+    "esconden",
+    "comentan en el descansillo",
+    "guardan en un cajón",
+    "vigilan desde la mirilla",
+    "cambian de sitio",
+    "envuelven en papel de aluminio",
+    "apuntan en una libreta",
+    "dejan junto al telefonillo"
+   ],
+   "lugares": [
+    "el armario de los productos de limpieza",
+    "la balda que nadie alcanza",
+    "el cuarto de contadores del portal",
+    "el cajón de los cables viejos",
+    "la parte de atrás de la nevera",
+    "el rellano entre el tercero y el cuarto"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. Todo ocurre en {lugar} y en casa lo llaman «{sust} {adj}».",
+    "La pista está en el portal: {grupo} {verbo} {tema} desde {lugar}. Nombre de andar por casa: «{sust} {adj}».",
+    "{tiempo_may}, {grupo} {verbo} {tema}. Si busca pruebas, empiece por {lugar}.",
+    "Nadie lo dice en la reunión de vecinos, pero {grupo} {verbo} {tema} desde {lugar}. Lo llaman «{sust} {adj}»."
+   ],
+   "estudios": [
+    "Una encuesta {adj} del portal detectó {sust} en el {pct}% de las casas donde se habló de {tema}.",
+    "Según una libreta encontrada en {lugar}, {tema} coincide con {sust} en el {pct}% de los casos.",
+    "El recuento de {cita} confirma que {sust} aparece junto a {tema} un {pct}% de las veces.",
+    "Los datos de la comunidad sitúan la incidencia {adj} de {sust} en un {pct}%."
+   ],
+   "retoricas": [
+    "¿por qué desaparece justo cuando vienen visitas?",
+    "pregunte al vecino que nunca baja la basura",
+    "en todas las casas hay un cajón que nadie quiere abrir",
+    "si fuera normal, no haría ese ruido de noche",
+    "las comunidades de vecinos no convocan juntas por casualidad",
+    "mire detrás de la nevera y luego hablamos"
+   ],
+   "cierres": [
+    "Cierre bien al salir.",
+    "Y no se lo cuente al grupo del portal.",
+    "Mañana mire debajo del felpudo.",
+    "La próxima vez que suene el ascensor, ya sabe.",
+    "Yo solo digo que antes no estaba ahí."
+   ],
+   "conectores": [
+    "Dicho entre nosotros,",
+    "Según se comenta en el portal,",
+    "A simple vista parece normal, pero",
+    "Con la puerta cerrada,",
+    "Y esto lo sabe todo el bloque:"
+   ]
+  },
+  "esoterico": {
+   "nombre": "esotérico",
+   "aperturas": [
+    "La señal apareció tres veces. A la cuarta decidí escribirlo.",
+    "Hay símbolos que no deberían repetirse tanto.",
+    "El calendario oculto había marcado este día.",
+    "No lea esto frente a un espejo.",
+    "La explicación racional termina exactamente aquí.",
+    "Anoche volvió a aparecer el mismo número."
+   ],
+   "grupos": [
+    "los miembros de la hermandad del círculo incompleto",
+    "los custodios de la séptima llave",
+    "las personas que leen sombras al mediodía",
+    "los miembros del consejo de las campanas mudas",
+    "los guardianes del calendario invertido",
+    "los iniciados de la orden de los tres paraguas",
+    "los intérpretes del símbolo torcido",
+    "los integrantes del coro secreto de las persianas"
+   ],
+   "verbos": [
+    "invocan",
+    "alinean ritualmente",
+    "ocultan bajo símbolos",
+    "interpretan en silencio",
+    "consagran cada equinoccio",
+    "marcan con tiza",
+    "predicen al revés",
+    "vigilan desde el umbral"
+   ],
+   "lugares": [
+    "una cripta debajo de una papelería",
+    "el centro exacto de una rotonda",
+    "una habitación con trece esquinas",
+    "el sótano de una tienda de lámparas",
+    "el pasillo que aparece en todos los sueños",
+    "una ermita que no figura en los mapas"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. El rito se completa en {lugar} bajo el nombre «{sust} {adj}».",
+    "El símbolo conduce a {grupo}, que {verbo} {tema} desde {lugar}. La fórmula es «{sust} {adj}».",
+    "{tiempo_may}, {grupo} {verbo} {tema}. Todo converge en {lugar} cuando pronuncian «{sust} {adj}».",
+    "No es azar: {grupo} {verbo} {tema} desde {lugar}. El sello interior dice «{sust} {adj}»."
+   ],
+   "estudios": [
+    "El códice {adj} {cita_de} sitúa {sust} detrás {tema_de} en el {pct}% de las conjunciones.",
+    "{cita_may} registró {sust} {adj} en el {pct}% de los símbolos asociados a {tema}.",
+    "La tabla ritual de {cita} vincula {tema} y {sust} en un {pct}% de los ciclos.",
+    "Un manuscrito atribuido a {cita} cifra en {pct}% la presencia de {sust} alrededor {tema_de}."
+   ],
+   "retoricas": [
+    "¿por qué aparece siempre el mismo número?",
+    "las coincidencias también pueden ser rituales",
+    "nadie dibuja el mismo símbolo seis veces por accidente",
+    "mire la sombra, no el objeto",
+    "lo antiguo no desaparece; cambia de nombre",
+    "si ha llegado hasta aquí, la señal ya le eligió"
+   ],
+   "cierres": [
+    "El círculo queda abierto.",
+    "No repita el nombre tres veces.",
+    "La próxima señal será para usted.",
+    "Quien deba entenderlo, lo entenderá.",
+    "Apague la luz antes de compartir esto."
+   ],
+   "conectores": [
+    "Según la tradición reservada,",
+    "Bajo una lectura simbólica,",
+    "El tercer indicio confirma que",
+    "Como estaba profetizado,",
+    "En la geometría secreta del asunto,"
+   ]
+  },
+  "periodistico": {
+   "nombre": "periodístico",
+   "aperturas": [
+    "Esta información no estaba destinada a publicarse.",
+    "Dos fuentes independientes confirman lo mismo.",
+    "La redacción recibió anoche un sobre sin remitente.",
+    "La versión oficial deja demasiadas preguntas abiertas.",
+    "Publicamos esto después de contrastarlo con una persona y media.",
+    "Última hora: el asunto es más raro de lo que parecía."
+   ],
+   "grupos": [
+    "fuentes próximas a la investigación",
+    "los corresponsales del turno de madrugada",
+    "los analistas de datos de una revista desaparecida",
+    "testigos que piden no ser identificados",
+    "los redactores de la sección que nadie firma",
+    "los corresponsales de una agencia con sede desconocida",
+    "los fotógrafos que llegaron demasiado pronto",
+    "los miembros del consejo editorial de un boletín clandestino"
+   ],
+   "verbos": [
+    "siguen la pista de",
+    "filtran documentos sobre",
+    "contrastan discretamente",
+    "investigan desde hace meses",
+    "reconstruyen minuto a minuto",
+    "publican entregas sobre",
+    "verifican fuera de cámara",
+    "mantienen bajo embargo"
+   ],
+   "lugares": [
+    "una redacción encima de un bar",
+    "el archivo de una emisora local",
+    "una cabina de edición sin ventanas",
+    "el buzón de voz de un corresponsal",
+    "la hemeroteca de un diario extinto",
+    "un servidor bajo jurisdicción imprecisa"
+   ],
+   "nucleos": [
+    "{grupo_may} {verbo} {tema} {tiempo}. La documentación salió de {lugar} con el rótulo «{sust} {adj}».",
+    "La investigación conduce a {grupo}, que {verbo} {tema} desde {lugar}. El archivo se titula «{sust} {adj}».",
+    "{tiempo_may}, {grupo} {verbo} {tema}. Una copia permanece en {lugar} bajo la clave «{sust} {adj}».",
+    "Fuentes consultadas señalan que {grupo} {verbo} {tema} desde {lugar}. Nombre interno: «{sust} {adj}»."
+   ],
+   "estudios": [
+    "Documentos revisados por {cita} sitúan {sust} detrás {tema_de} en el {pct}% de los casos.",
+    "{cita_may} confirma que {sust} {adj} aparece en el {pct}% de los registros sobre {tema}.",
+    "Una base de datos obtenida por {cita} vincula {tema} con {sust} en un {pct}% de las entradas.",
+    "El análisis de {cita} eleva al {pct}% la coincidencia entre {tema} y {sust} {adj}."
+   ],
+   "retoricas": [
+    "¿por qué nadie quiso responder a esta pregunta?",
+    "la fuente pidió anonimato por algo",
+    "la versión oficial cambió tres veces en una tarde",
+    "lo que no se desmiente también cuenta",
+    "hemos solicitado su versión y seguimos esperando",
+    "los documentos hablan aunque el portavoz no lo haga"
+   ],
+   "cierres": [
+    "Seguiremos informando.",
+    "Esta redacción conserva una copia.",
+    "La investigación continúa.",
+    "Publicamos los hechos. Las conclusiones son suyas.",
+    "Ningún portavoz quiso hacer comentarios."
+   ],
+   "conectores": [
+    "Según documentos consultados,",
+    "Fuentes coincidentes sostienen que",
+    "Este medio ha podido confirmar que",
+    "La cronología revela que",
+    "A preguntas de esta redacción,"
+   ]
+  }
+ },
  "GRUPOS": [
   "las palomas",
   "los gatos de barrio",
@@ -434,7 +876,7 @@ const T = {
   "una exageración",
   "una chorrada de internet",
   "cansancio",
-  "que tienes mucho tiempo libre"
+  "falta de oficio"
  ],
  "PERIODOS": [
   "décadas",
