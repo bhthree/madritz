@@ -302,7 +302,15 @@ const MOTOR={
 
 
 // ---- estado ----
-var ACTO=null, SEL={}, MANDOS={delirio:3,longitud:2,sabiduria:2}, ULTIMO=null;
+var ACTO=null,
+    SEL={},
+    MANDOS={delirio:3,longitud:2,sabiduria:2},
+    ULTIMO=null;
+
+var AUTO_LEER=false;
+var HABLANDO=false;
+var PAUSADO=false;
+var UTT=null;
 var $=function(s){return document.querySelector(s);};
 var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
 
@@ -412,9 +420,87 @@ function abreHoja(sello,exp,texto){
   var h=$("#hoja");
   if(!h.open){ if(h.showModal)h.showModal(); else h.setAttribute("open",""); }
   $(".cuerpo").scrollTop=0;
+      if(AUTO_LEER){
+
+        setTimeout(function(){
+
+            leerResultado();
+
+        },200);
+    }
 }
 function cierraHoja(){var h=$("#hoja"); if(h.close)h.close(); else h.removeAttribute("open");}
 
+function textoActual(){
+    return $("#h_out").textContent || "";
+}
+
+function detenerLectura(){
+    try{
+        speechSynthesis.cancel();
+    }catch(e){}
+    HABLANDO=false;
+    PAUSADO=false;
+
+    var b=$("#h_pausa");
+    if(b) b.textContent=T.UI.pausa;
+}
+
+function leerResultado(){
+
+    if(!window.speechSynthesis)
+        return;
+
+    detenerLectura();
+
+    UTT = new SpeechSynthesisUtterance(textoActual());
+
+    UTT.lang="es-ES";
+    UTT.rate=1.0;
+    UTT.pitch=1.0;
+    UTT.volume=1.0;
+
+    UTT.onend=function(){
+        HABLANDO=false;
+        PAUSADO=false;
+
+        var b=$("#h_pausa");
+        if(b) b.textContent=T.UI.pausa;
+    };
+
+    HABLANDO=true;
+    speechSynthesis.speak(UTT);
+}
+
+function pausaLectura(){
+
+    if(!window.speechSynthesis)
+        return;
+
+    var b=$("#h_pausa");
+
+    if(HABLANDO && !PAUSADO){
+
+        speechSynthesis.pause();
+
+        PAUSADO=true;
+
+        if(b)
+            b.textContent=T.UI.seguir;
+
+        return;
+    }
+
+    if(PAUSADO){
+
+        speechSynthesis.resume();
+
+        PAUSADO=false;
+
+        if(b)
+            b.textContent=T.UI.pausa;
+    }
+}
 // ---- compartir: la hoja de compartir REAL de iOS ----
 // Tres líneas y es lo que más acerca esto a una app nativa. Si el
 // dispositivo no la trae, copiamos al portapapeles y lo decimos.
@@ -456,16 +542,63 @@ function montaUI(){
   $("#bloca").addEventListener("click",function(){
     MANDOS={delirio:5,longitud:3,sabiduria:5}; pintaMandos();
     if(ACTO)generar(ACTO);});
-  $("#h_otra").addEventListener("click",function(){if(ULTIMO)generar(ULTIMO);});
+  $("#h_otra").addEventListener("click",function(){
+
+    detenerLectura();
+
+    if(ULTIMO)
+        generar(ULTIMO);
+});
+  
   $("#h_comp").addEventListener("click",compartir);
-  $("#h_cerrar").addEventListener("click",cierraHoja);
+  $("#h_cerrar").addEventListener("click",function(){
+
+    detenerLectura();
+
+    cierraHoja();
+});
+
+$("#h_leer").addEventListener(
+    "click",
+    leerResultado
+);
+
+$("#h_pausa").addEventListener(
+    "click",
+    pausaLectura
+);
+
+$("#h_stop").addEventListener(
+    "click",
+    detenerLectura
+);
+  
   // cerrar tocando fuera del panel
   $("#hoja").addEventListener("click",function(e){if(e.target===$("#hoja"))cierraHoja();});
+    AUTO_LEER =
+    localStorage.getItem("auto_leer")==="1";
+ 
+    $("#auto_leer").checked=AUTO_LEER;
+ 
+    $("#auto_leer").addEventListener(
+    "change",
+    function(){
+ 
+    AUTO_LEER=this.checked;
+ 
+    localStorage.setItem(
+    "auto_leer",
+    AUTO_LEER ? "1" : "0"
+    );
+    }
+    );
   ver(T.ACTOS[0].id);
   $("#cargando").className="hide";
   $("#app").className="";
   $("#tabbar").className="tabbar";
 }
+
+
 function averia(titulo,detalle,ayuda){
   try{$("#cargando").className="hide";}catch(e){}
   var d=document.getElementById("error");
